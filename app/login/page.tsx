@@ -1,0 +1,12 @@
+'use client';
+import { FormEvent, useState } from 'react';
+import { createClient } from '../../lib/supabase/client';
+
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function submit(event: FormEvent) { event.preventDefault(); setBusy(true); setError(''); const { error } = await createClient().auth.signInWithPassword({ email, password }); if (error) { setError(error.message); setBusy(false); } else window.location.href = '/app'; }
+  return <main className="auth-shell"><section className="auth-card"><div className="brand auth-brand"><span className="brand-mark">H</span><span>Hato</span></div><h1>Ingresar a tu cuenta</h1><p className="muted">Gestión ganadera de carne, en un solo lugar.</p><form onSubmit={submit}><label>Correo electrónico<input type="email" required value={email} onChange={e => setEmail(e.target.value)} /></label><label>Contraseña<input type="password" required minLength={6} value={password} onChange={e => setPassword(e.target.value)} /></label>{error && <p className="error">{error}</p>}<button className="button" disabled={busy}>{busy ? 'Ingresando…' : 'Ingresar'}</button></form><p className="auth-note">El acceso requiere una cuenta creada en Supabase.</p></section></main>;
+}
