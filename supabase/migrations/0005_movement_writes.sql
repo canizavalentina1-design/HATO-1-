@@ -1,0 +1,1 @@
+create policy movements_insert on public.stock_movements for insert with check (exists(select 1 from public.organization_members m where m.organization_id=organization_id and m.user_id=auth.uid() and m.status='active' and m.role in ('owner','admin','manager','operator')));
