@@ -4,6 +4,7 @@ import './table.css';
 import './dashboard.css';
 import './rebanio.css';
 import './catalogos.css';
+import './farms.css';
 
 export const metadata = { title: 'Hato', description: 'Gestión ganadera de carne' };
 
