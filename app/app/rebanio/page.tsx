@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import AnimalForm from './animal-form';
 import MovementForm from './movement-form';
 import RebanioTable from './rebanio-table';
+import BulkTools from './bulk-tools';
 
 export default async function RebanioPage() {
   const supabase = await createClient();
@@ -13,5 +14,5 @@ export default async function RebanioPage() {
   const { data: farms } = organizationId ? await supabase.from('farms').select('id').eq('organization_id', organizationId).limit(1) : { data: [] };
   const farmId = farms?.[0]?.id;
   const { data: animals } = organizationId ? await supabase.from('animals').select('visual_id,electronic_id,name,sex,breed,category,location,group_name,status').eq('organization_id', organizationId).order('created_at', { ascending: false }).limit(500) : { data: [] };
-  return <main className="content standalone"><header><div><p className="eyebrow">REBAÑO</p><h1>Animales</h1><p className="muted">Registro de hacienda de carne.</p></div>{organizationId && farmId && <div className="action-row"><MovementForm organizationId={organizationId} farmId={farmId}/><AnimalForm organizationId={organizationId} farmId={farmId}/></div>}</header><div className="panel table-panel"><RebanioTable animals={animals || []}/></div></main>;
+  return <main className="content standalone"><header><div><p className="eyebrow">REBAÑO</p><h1>Animales</h1><p className="muted">Registro de hacienda de carne.</p></div>{organizationId && farmId && <div className="action-row"><BulkTools organizationId={organizationId} farmId={farmId}/><MovementForm organizationId={organizationId} farmId={farmId}/><AnimalForm organizationId={organizationId} farmId={farmId}/></div>}</header><div className="panel table-panel"><RebanioTable animals={animals || []}/></div></main>;
 }
